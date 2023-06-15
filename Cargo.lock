@@ -149,6 +149,16 @@ name = "hzlang"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "hzlang_parser",
+]
+
+[[package]]
+name = "hzlang_parser"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76fc53fdd5ef11d10227feb57fe6de0e48c02fea6bb921321d71412d3099e3c6"
+dependencies = [
+ "parco",
 ]
 
 [[package]]
@@ -191,6 +201,12 @@ name = "once_cell"
 version = "1.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
+
+[[package]]
+name = "parco"
+version = "3.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d265d8a0ee63fe5b69e9a82f2c5570210696513ea9daa51bee7d2ec20c8737e7"
 
 [[package]]
 name = "proc-macro2"
