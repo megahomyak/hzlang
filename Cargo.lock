@@ -161,9 +161,9 @@ dependencies = [
 
 [[package]]
 name = "hzlang_parser"
-version = "4.1.1"
+version = "5.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1306cacc86f486e9a425529ad9e8f020272ea2ca9c6380f7bfb3cc5c90c3f6fa"
+checksum = "9e95d4694810631d9cd2f1a99905f83ebf1a93f0c3145a62c8ffcb147edf07e7"
 dependencies = [
  "parco",
 ]

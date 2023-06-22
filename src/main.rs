@@ -1,10 +1,5 @@
-use std::sync::Arc;
-
-use action_storage::ActionStorage;
 use clap::Parser;
 use cmd::Action;
-
-mod action_storage;
 
 mod cmd {
     use clap::{Parser, Subcommand};
@@ -22,30 +17,52 @@ mod cmd {
     }
 }
 
-mod object {
-    use std::fmt::Display;
-
-    pub trait Object: Display {}
-}
-
-struct Executor {
-    action_storage: ActionStorage<Arc<dyn object::Object>>,
-}
+struct Executor {}
 
 impl Executor {
     pub fn run(&self, program: hzlang_parser::Program) -> anyhow::Result<()> {
-        for action_invocation in program.contents {
-            if let Some(action_invocation) = action_invocation.contents.action_invocation {
-                self.action_storage.call()?
-                action_invocation.name
+        for line in program.contents {
+            match line {
+                hzlang_parser::Line::Filled {
+                    action_invocation,
+                    comment,
+                    attached,
+                } => {
+                    let parts = action_invocation.name.parts;
+                    if parts[0]
+                        == hzlang_parser::NamePart::Word(hzlang_parser::Word("print".to_owned()))
+                    {
+                        let hzlang_parser::NamePart::Filler(hzlang_parser::Filler::String(string)) = &parts[1] else { panic!() };
+                        let mut raw_parts_combined = String::new();
+                        for part in &string.parts {
+                            match part {
+                                hzlang_parser::HzStringPart::Name(_) => panic!(),
+                                hzlang_parser::HzStringPart::Raw(
+                                    hzlang_parser::RawHzStringPart(raw),
+                                ) => raw_parts_combined.push_str(raw),
+                            }
+                        }
+                        println!("{}", raw_parts_combined);
+                    }
+                }
+                hzlang_parser::Line::Empty { .. } => (),
             }
         }
+        Ok(())
     }
 }
 
 fn main() {
     let cmd_args = cmd::Args::parse();
     match cmd_args.action {
-        Action::Run { script_file_path } => println!("{}", script_file_path),
+        Action::Run { script_file_path } => {
+            let executor = Executor {};
+            executor
+                .run(
+                    hzlang_parser::parse(&std::fs::read_to_string(script_file_path).unwrap())
+                        .unwrap(),
+                )
+                .unwrap();
+        }
     }
 }
