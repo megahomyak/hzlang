@@ -1,8 +1,10 @@
-use std::collections::HashMap;
+use std::sync::Arc;
 
+use action_storage::ActionStorage;
 use clap::Parser;
+use cmd::Action;
 
-mod actions_registry;
+mod action_storage;
 
 mod cmd {
     use clap::{Parser, Subcommand};
@@ -16,26 +18,27 @@ mod cmd {
     #[command(author, version, about)]
     pub struct Args {
         #[command(subcommand)]
-        action: Action,
+        pub action: Action,
     }
 }
 
+mod object {
+    use std::fmt::Display;
 
-#[derive(PartialEq, Eq, Hash)]
-struct Name {
-    contents: Vec<NamePart>,
+    pub trait Object: Display {}
 }
 
-struct Action {}
-
 struct Executor {
-    execute: HashMap<Name, Action>,
+    action_storage: ActionStorage<Arc<dyn object::Object>>,
 }
 
 impl Executor {
-    fn run(&self, program: hzlang_parser::Program) -> Result<(), ()> {
+    pub fn run(&self, program: hzlang_parser::Program) -> anyhow::Result<()> {
         for action_invocation in program.contents {
-
+            if let Some(action_invocation) = action_invocation.contents.action_invocation {
+                self.action_storage.call()?
+                action_invocation.name
+            }
         }
     }
 }

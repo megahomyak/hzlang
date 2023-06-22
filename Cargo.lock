@@ -52,6 +52,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "anyhow"
+version = "1.0.71"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c7d0618f0e0b7e8ff11427422b64564d5fb0be1940354bfe2e0529b18a9d9b8"
+
+[[package]]
 name = "bitflags"
 version = "1.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -148,15 +154,16 @@ checksum = "fed44880c466736ef9a5c5b5facefb5ed0785676d0c02d612db14e54f0d84286"
 name = "hzlang"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "clap",
  "hzlang_parser",
 ]
 
 [[package]]
 name = "hzlang_parser"
-version = "2.0.0"
+version = "4.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76fc53fdd5ef11d10227feb57fe6de0e48c02fea6bb921321d71412d3099e3c6"
+checksum = "1306cacc86f486e9a425529ad9e8f020272ea2ca9c6380f7bfb3cc5c90c3f6fa"
 dependencies = [
  "parco",
 ]
